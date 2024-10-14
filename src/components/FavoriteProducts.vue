@@ -1,6 +1,7 @@
 <template>
   <div class="container favorite-products">
-    <h2 class="my-4">Produtos Favoritos </h2>
+    <h2 class="my-4">Produtos Favoritos</h2>
+    
     <div v-if="favorites.length === 0" class="alert alert-warning">
       Nenhum produto foi favoritado ainda.
     </div>
@@ -19,22 +20,37 @@
         </div>
       </div>
     </div>
+
+    <div v-if="totalItems >= 0" class="mt-4">
+      <h4>Total de Produtos: {{ totalItems }}</h4>
+      <h4>Total de Favoritos: {{ favorites.length }}</h4>
+    </div>
   </div>
 </template>
 
-
 <script>
 import { EventBus } from "@/eventBus";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       favorites: [],
+      totalItems: 0,
     };
   },
   methods: {
     loadFavorites() {
       this.favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      this.getTotalItems(); 
+    },
+    async getTotalItems() {
+      try {
+        const response = await axios.get('/report'); 
+        this.totalItems = response.data.totalProducts;
+      } catch (error) {
+        console.error("Erro ao obter o total de produtos:", error);
+      }
     },
     removeFromFavorites(product) {
       let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
