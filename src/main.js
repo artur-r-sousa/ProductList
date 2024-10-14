@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router'; // Importa o router
+import router from './router';
 import axios from 'axios';
 import VueGtm from 'vue-gtm';
 import 'bootstrap';
@@ -19,5 +19,5 @@ app.use(VueGtm, {
   vueRouter: router
 });
 
-app.use(router); // Use o router na instância do Vue
+app.use(router);
 app.mount('#app');
